@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Günlük küçük harcamalarını 2 dokunuşla kaydet, gün sonunda paran nereye gitti gör.">
+  <meta name="theme-color" content="#f4f4f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181b" media="(prefers-color-scheme: dark)">
+  <title>CepHarçlık</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+
+    <header class="header">
+      <h1>CepHarçlık</h1>
+      <p id="header-date" class="header-date"></p>
+    </header>
+
+    <!-- BUGÜN GÖRÜNÜMÜ -->
+    <main id="view-today" class="view">
+
+      <section id="budget-card" class="card budget-card" aria-live="polite">
+        <div class="budget-main">
+          <p id="budget-label" class="budget-label">Bugün</p>
+          <p id="budget-amount" class="budget-amount">₺0,00</p>
+        </div>
+        <div id="budget-bar" class="budget-bar hidden">
+          <div id="budget-bar-fill" class="budget-bar-fill"></div>
+        </div>
+        <button id="limit-toggle" class="link-btn" type="button">Günlük limit belirle</button>
+        <form id="limit-form" class="limit-form hidden">
+          <input id="limit-input" type="text" inputmode="decimal" placeholder="Örn. 250" aria-label="Günlük limit (TL)">
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+          <button type="button" id="limit-remove" class="btn btn-ghost">Kaldır</button>
+        </form>
+      </section>
+
+      <section class="card entry-card">
+        <input id="amount-input" type="text" inputmode="decimal" autocomplete="off"
+               placeholder="₺ 0,00" aria-label="Harcama tutarı (TL)" class="amount-input">
+        <input id="note-input" type="text" autocomplete="off" maxlength="60"
+               placeholder="Not (isteğe bağlı)" aria-label="Not" class="note-input">
+        <p class="entry-hint">Kategoriye dokun, kayıt tamam:</p>
+        <div id="category-grid" class="category-grid"></div>
+      </section>
+
+      <section class="today-section">
+        <h2 class="section-title">Bugünkü harcamalar</h2>
+        <ul id="today-list" class="expense-list"></ul>
+        <div id="today-empty" class="empty-state hidden">
+          <p class="empty-emoji">🪙</p>
+          <p>Bugün henüz kayıt yok.</p>
+          <p class="empty-hint">Yukarıdan tutarı yaz, kategoriye dokun — ilk kaydın 5 saniye sürer.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ÖZET GÖRÜNÜMÜ -->
+    <main id="view-summary" class="view hidden">
+
+      <section class="card month-card">
+        <div class="month-nav">
+          <button id="month-prev" class="btn btn-ghost" type="button" aria-label="Önceki ay">‹</button>
+          <h2 id="month-title" class="month-title"></h2>
+          <button id="month-next" class="btn btn-ghost" type="button" aria-label="Sonraki ay">›</button>
+        </div>
+        <p id="month-total" class="month-total">₺0,00</p>
+        <p id="month-meta" class="month-meta"></p>
+      </section>
+
+      <section class="card">
+        <h2 class="section-title">Kategori dökümü</h2>
+        <div id="category-breakdown" class="category-breakdown"></div>
+        <div id="summary-empty" class="empty-state hidden">
+          <p class="empty-emoji">📊</p>
+          <p>Bu ayda kayıt yok.</p>
+        </div>
+      </section>
+
+      <section class="card backup-card">
+        <h2 class="section-title">Yedek</h2>
+        <p class="backup-hint">Verin sadece bu cihazda saklanır. Cihaz değiştirirken yedeğini indir, yeni cihazda yükle.</p>
+        <div class="backup-actions">
+          <button id="export-btn" class="btn btn-primary" type="button">JSON indir</button>
+          <label class="btn btn-ghost" for="import-input">JSON yükle</label>
+          <input id="import-input" type="file" accept="application/json,.json" class="hidden">
+        </div>
+      </section>
+
+    </main>
+
+    <div id="snackbar" class="snackbar hidden">
+      <span id="snackbar-text"></span>
+      <button id="undo-btn" class="snackbar-btn" type="button">Geri al</button>
+    </div>
+
+    <nav class="bottom-nav">
+      <button id="tab-today" class="nav-btn active" type="button">📝<span>Bugün</span></button>
+      <button id="tab-summary" class="nav-btn" type="button">📊<span>Özet</span></button>
+    </nav>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
