@@ -302,6 +302,49 @@ body {
   transition: width 300ms ease;
 }
 
+/* Günlük döküm */
+.daily-hint { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
+
+.day-group { border-bottom: 1px solid var(--border); }
+.day-group:last-child { border-bottom: none; }
+
+.day-group summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.day-group summary::-webkit-details-marker { display: none; }
+
+.day-group summary::before {
+  content: '▸';
+  color: var(--muted);
+  font-size: 0.8rem;
+  transition: transform 200ms ease;
+}
+
+.day-group[open] summary::before { transform: rotate(90deg); }
+
+.day-name { flex: 1; font-size: 0.9rem; font-weight: 600; }
+
+.day-total {
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.day-expense {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0 8px 18px;
+}
+
 /* Yedek */
 .backup-hint { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
 .backup-actions { display: flex; gap: 8px; }

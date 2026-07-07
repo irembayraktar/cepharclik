@@ -4,7 +4,7 @@
    Strateji: her istekte önce ağ denenir (güncelleme anında gelsin diye),
    başarısız olursa (çevrimdışı) önbellekteki kopya döner. */
 
-const CACHE = 'cepharclik-v1';
+const CACHE = 'cepharclik-v2';
 
 const ASSETS = [
   './',

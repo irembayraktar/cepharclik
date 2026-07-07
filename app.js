@@ -128,6 +128,7 @@ const monthTitle = el('month-title');
 const monthTotal = el('month-total');
 const monthMeta = el('month-meta');
 const categoryBreakdown = el('category-breakdown');
+const dailyBreakdown = el('daily-breakdown');
 const summaryEmpty = el('summary-empty');
 const snackbar = el('snackbar');
 const snackbarText = el('snackbar-text');
@@ -400,6 +401,73 @@ function renderSummary() {
 
     row.append(head, bar);
     categoryBreakdown.appendChild(row);
+  }
+
+  renderDailyBreakdown(items);
+}
+
+// Seçili ayın gün gün dökümü: her günün toplamı, dokununca kayıtları açılır
+function renderDailyBreakdown(items) {
+  dailyBreakdown.innerHTML = '';
+  const now = new Date();
+
+  const byDay = new Map();
+  for (const e of items) {
+    const key = new Date(e.createdAt).toDateString();
+    if (!byDay.has(key)) byDay.set(key, []);
+    byDay.get(key).push(e);
+  }
+  const days = [...byDay.entries()].sort((a, b) => new Date(b[0]) - new Date(a[0]));
+
+  for (const [key, dayItems] of days) {
+    const date = new Date(key);
+    const total = dayItems.reduce((sum, e) => sum + e.amountKurus, 0);
+
+    const group = document.createElement('details');
+    group.className = 'day-group';
+    group.open = isSameDay(date, now);
+
+    const summary = document.createElement('summary');
+    const name = document.createElement('span');
+    name.className = 'day-name';
+    name.textContent = (isSameDay(date, now) ? 'Bugün · ' : '') +
+      date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', weekday: 'long' });
+    const dayTotal = document.createElement('span');
+    dayTotal.className = 'day-total';
+    dayTotal.textContent = fmtKurus(total);
+    summary.append(name, dayTotal);
+    group.appendChild(summary);
+
+    const sorted = [...dayItems].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    for (const e of sorted) {
+      const cat = categoryById(e.categoryId);
+      const row = document.createElement('div');
+      row.className = 'day-expense';
+
+      const icon = document.createElement('span');
+      icon.className = 'expense-icon';
+      icon.textContent = cat.icon;
+
+      const info = document.createElement('div');
+      info.className = 'expense-info';
+      const title = document.createElement('p');
+      title.className = 'expense-title';
+      title.textContent = e.note ? e.note : cat.name;
+      const time = document.createElement('p');
+      time.className = 'expense-time';
+      time.textContent = (e.note ? `${cat.name} · ` : '') +
+        new Date(e.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+      info.append(title, time);
+
+      const amount = document.createElement('span');
+      amount.className = 'expense-amount';
+      amount.textContent = fmtKurus(e.amountKurus);
+
+      row.append(icon, info, amount);
+      group.appendChild(row);
+    }
+
+    dailyBreakdown.appendChild(group);
   }
 }
 

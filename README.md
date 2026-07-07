@@ -14,9 +14,10 @@ Akış:
 2. Kategoriye dokun — kayıt tamam, "bugün kalan" anında güncellenir.
 
 - **Günlük limit:** Üst karttaki "Günlük limit belirle" ile ayarlanır; aşınca tutar kırmızıya döner.
-- **Özet sekmesi:** Aylık toplam, harcama yapılan gün sayısı, günlük ortalama ve kategori dökümü.
+- **Özet sekmesi:** Aylık toplam, harcama yapılan gün sayısı, günlük ortalama, kategori dökümü ve gün gün açılır günlük döküm.
 - **Silme:** Kayıt yanındaki ✕ — onay sorusu yok, 5 saniye "Geri al" hakkı var.
-- **Yedek:** Özet sekmesinden JSON indir / yükle (cihaz değiştirirken).
+- **Geçmiş kalıcıdır:** Gün değişince hiçbir şey silinmez; "Bugün" sekmesi sadece bugünü gösterir, tüm kayıtlar cihazda saklanır ve Özet'teki günlük dökümden görülür.
+- **Yedek:** Özet sekmesinden JSON indir / yükle. Günlük kullanımda gerekmez; sadece telefon değiştirirken veya tarayıcı verisini sıfırlamadan önce.
 
 ## iPhone'a ekleme (PWA)
 
