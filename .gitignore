@@ -1,0 +1,7 @@
+# İşletim sistemi çöpleri
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Geçici test dosyaları
+__smoke-test__.html

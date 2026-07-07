@@ -479,6 +479,12 @@ function renderAll() {
 
 renderAll();
 
+// Çevrimdışı destek: service worker yalnızca HTTPS'te kayıt olur
+// (dosyayı bilgisayarda doğrudan açınca devreye girmez, gerek de yok)
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
 // Gece yarısını geçince "bugün" tazelensin
 setInterval(() => {
   const shownDate = headerDate.textContent;

@@ -2,9 +2,11 @@
 
 Kart ekstresi büyük harcamaları gösterir; gün içindeki küçük kahve, dolmuş, market harcamaları toplamda kaybolur. CepHarçlık bu küçük harcamaları 2 dokunuşla kaydeder ve "param nereye gitti" sorusuna anında cevap verir.
 
-## Kullanım
+**Canlı demo:** https://irembayraktar.github.io/cepharclik/
 
-Kurulum yok: `index.html` dosyasını tarayıcıda aç. Telefonda kullanmak için dosyaları herhangi bir statik hosta koyup (GitHub Pages yeter) tarayıcıdan "Ana ekrana ekle" demek yeterli.
+## Çalıştırma
+
+Kurulum ve build yok: `index.html` dosyasını tarayıcıda açman yeterli. Framework, paket, sunucu — hiçbiri gerekmiyor.
 
 Akış:
 
@@ -16,14 +18,37 @@ Akış:
 - **Silme:** Kayıt yanındaki ✕ — onay sorusu yok, 5 saniye "Geri al" hakkı var.
 - **Yedek:** Özet sekmesinden JSON indir / yükle (cihaz değiştirirken).
 
+## iPhone'a ekleme (PWA)
+
+1. Safari'de https://irembayraktar.github.io/cepharclik/ adresini aç.
+2. Alt ortadaki **Paylaş** (⬆️) ikonuna dokun.
+3. Menüde **"Ana Ekrana Ekle"** seçeneğine dokun → sağ üstten **Ekle**.
+4. Ana ekrandaki 🪙 ikon artık uygulama gibi tam ekran açılır; service worker sayesinde **internet yokken de çalışır**.
+
+Android'de: Chrome → ⋮ menü → "Ana ekrana ekle".
+
+## Yayınlama
+
+Uygulama GitHub Pages'te yayınlanır; yayın kaynağı `gh-pages` dalıdır. Değişiklik sonrası:
+
+```powershell
+git add .
+git commit -m "degisiklik aciklamasi"
+git push origin main            # kod deposu
+git push origin main:gh-pages   # yayın (1-2 dk içinde canlıya çıkar)
+```
+
+Not: Uygulama kabuğu service worker ile önbelleklenir; yayın sonrası güncellemenin telefona inmesi için `sw.js` içindeki `CACHE` sürümünü artır (örn. `cepharclik-v1` → `v2`) — aksi halde eski sürüm bir açılış daha yaşayabilir.
+
 ## Teknik kararlar
 
 - **Backend yok, bilerek.** Tek kullanıcı + tek cihaz + paylaşımsız veri için localStorage yeterli; sunucu eklemek süs olurdu. Cihaz değiştirme ihtiyacı JSON dışa/içe aktarma ile çözüldü.
 - **Para integer kuruş olarak saklanır** (`amountKurus`), float değil — yuvarlama hatası birikmesin diye. Gösterim `Intl.NumberFormat('tr-TR')` ile.
 - **localStorage'da bile şema var:** `schema_version` alanı tutulur; bozuk/eski veri sessizce patlamak yerine temiz duruma döner, içe aktarmada sürüm doğrulanır.
-- **Motion bilinçli sınırlı:** İki micro-interaction var (kalan tutarın sayaç geçişi, limit aşımında renk dönüşü) + kayıt satırının girişi; hepsi 150-300ms, `prefers-reduced-motion` tercihine tamamen uyar.
+- **PWA katmanı ince tutuldu:** manifest + ağ-öncelikli service worker (güncelleme anında gelir, çevrimdışında önbellek devreye girer). Service worker yalnızca HTTPS'te kayıt olur; dosyayı lokalde açmak aynen çalışmaya devam eder.
+- **Motion bilinçli sınırlı:** İki micro-interaction (kalan tutarın sayaç geçişi, limit aşımında renk dönüşü) + kayıt satırının girişi; hepsi 150-300ms, `prefers-reduced-motion` tercihine tamamen uyar.
 - **Mobil öncelikli:** 360px'e göre tasarlandı; sayısal klavye (`inputmode="decimal"`), 44px+ dokunma hedefleri, başparmak bölgesinde kategori butonları, onay dialogu yerine undo.
-- **Bağımlılık sıfır:** Framework/kütüphane yok; üç dosya (`index.html`, `style.css`, `app.js`), koyu tema sistem tercihiyle otomatik.
+- **Bağımlılık sıfır:** Framework/kütüphane yok; koyu tema sistem tercihiyle otomatik. İkonlar dahil her şey repoda, dış istek yok.
 
 ## Bilinen sınırlar ve sonraki adımlar
 
